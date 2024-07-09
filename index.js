@@ -13,7 +13,16 @@ app.use(express.json());
 app.use(cors());
 
 async function main() {
-  await mongoose.connect('mongodb+srv://krishnabajpai28:5ghk62JFD2ieWnyL@veggify-react-app.3xbtqio.mongodb.net/?retryWrites=true&w=majority&appName=veggify-react-app');
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+    process.exit(1); // Exit process with failure
+  }
 }
 
 app.get('/', (req, res) => {
